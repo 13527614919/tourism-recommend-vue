@@ -13,7 +13,7 @@
               <li><a>首页</a></li>
               <li><a>团日游乐</a></li>
               <li><a>周边推荐</a></li>
-              <li><a>团游活动</a></li>
+              <li><a>跟团旅行</a></li>
               <li><a>定制旅游</a></li>
               <li><a>景点介绍</a></li>
               <li><a>路线查询</a></li>
@@ -85,14 +85,14 @@
             </div>
           </div>
         </div>
-        <!-- 团游推荐活动 -->
+        <!-- 跟团旅行推荐活动 -->
         <div class="perimeter_content4 center_parent">
           <div class="perimeter_layout center_child">
             <div class="perimeter_title">
               <div class="perimeter_icon">
                 <img src="../../assets/img/homePage/car.png">
               </div>
-              <div class="perimeter_font">团游活动</div>
+              <div class="perimeter_font">跟团旅行</div>
               <div class="perimeter_more"><a>更多 >></a></div>
             </div>
             <div class="perimeter_menu">
