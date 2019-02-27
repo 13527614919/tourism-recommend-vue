@@ -36,21 +36,56 @@
               <div class="perimeter_more"><a>更多 >></a></div>
             </div>
             <div class="perimeter_menu">
-                <div  class="card" v-for="item in parkList" :key="item.id">
-                  <div class="card_img">{{item.parkImg}}</div>
-                  <div class="card_detail"></div>
-                  <div class="card_price">
-                    <div class="card_price_layout">
-                      <a>门票价：<i>¥ {{item.parkPrice}}</i></a>
-                    </div>
-                    <div class="card_price_dist">距：{{item.dist}}&nbsp;m
-                    </div>
+              <div  class="card" v-for="item in parkList" :key="item.id">
+                <div class="card_img">
+                  <img v-bind:src="getImageUrl(item.parkImg)" />
+                </div>
+                <div class="card_detail card_detail_font" >
+                  <!--这里是多少了分离技术的积分是对方立刻就埃里克森多久了飞机上的都十分了解多少垃圾分类的-->
+                  <i>[最近推荐]</i>{{item.parkWord}}
+                </div>
+                <div class="card_price">
+                  <div class="card_price_layout">
+                    <a>门票价：<i>¥ {{item.parkPrice}}</i></a>
+                  </div>
+                  <div class="card_price_dist">距：{{item.dist}}&nbsp;m
                   </div>
                 </div>
+              </div>
             </div>
           </div>
         </div>
-        <!-- 团游活动 -->
+        <!-- 周边推荐活动 -->
+        <div class="perimeter_content4 center_parent">
+          <div class="perimeter_layout center_child">
+            <div class="perimeter_title">
+              <div class="perimeter_icon">
+                <img src="../../assets/img/homePage/car.png">
+              </div>
+              <div class="perimeter_font">周边推荐</div>
+              <div class="perimeter_more"><a>更多 >></a></div>
+            </div>
+            <div class="perimeter_menu">
+              <div  class="card" v-for="item in localParkList" :key="item.id">
+                <div class="card_img">
+                  <img v-bind:src="getImageUrl(item.parkImg)" />
+                </div>
+                <div class="card_detail card_detail_font" >
+                  <i>[最热推荐]</i>{{item.parkWord}}
+                </div>
+                <div class="card_price">
+                  <div class="card_price_layout">
+                    <a>{{item.parkCity}}</a>
+                  </div>
+                  <div class="card_price_dist">
+                    <i style="font-size: 15px; color: #00be7c">{{item.parkPopularity}}</i>&nbsp;人推荐
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 团游推荐活动 -->
         <div class="perimeter_content4 center_parent">
           <div class="perimeter_layout center_child">
             <div class="perimeter_title">
@@ -61,30 +96,21 @@
               <div class="perimeter_more"><a>更多 >></a></div>
             </div>
             <div class="perimeter_menu">
-              <div class="card">
-                <div class="card_img"></div>
-                <div class="card_detail"></div>
-                <div class="card_price"></div>
-              </div>
-              <div class="card">
-                <div class="card_img"></div>
-                <div class="card_detail"></div>
-                <div class="card_price"></div>
-              </div>
-              <div class="card">
-                <div class="card_img"></div>
-                <div class="card_detail"></div>
-                <div class="card_price"></div>
-              </div>
-              <div class="card">
-                <div class="card_img"></div>
-                <div class="card_detail"></div>
-                <div class="card_price"></div>
-              </div>
-              <div class="card" style="margin-right: 0">
-                <div class="card_img"></div>
-                <div class="card_detail"></div>
-                <div class="card_price"></div>
+              <div  class="card" v-for="item in localParkList" :key="item.id">
+                <div class="card_img">
+                  <img v-bind:src="getImageUrl(item.parkImg)" />
+                </div>
+                <div class="card_detail card_detail_font" >
+                  <i>[最热推荐]</i>{{item.parkWord}}
+                </div>
+                <div class="card_price">
+                  <div class="card_price_layout">
+                    <a>活动价：<i>¥ {{item.parkPrice}}</i></a>
+                  </div>
+                  <div class="card_price_dist">
+                    <i style="font-size: 15px; color: #00be7c">{{item.parkPopularity}}</i>&nbsp;人推荐
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -157,7 +183,7 @@
       </div>
       <!-- 右边小浮框-->
       <div class="back_top_box">
-        <a href="javascript:;" target="_blank">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=823996606&site=qq&menu=yes" target="_blank">
           <i class="chat_icon"></i>
           <span>在线客服</span>
         </a>
@@ -184,6 +210,15 @@
       HomeCarousel,
       HomeHead
     },
+    filter: {
+      ellipsis (value) {
+        if (!value) return ''
+        if (value.length > 25) {
+          return value.slice(0, 25) + '...'
+        }
+        return value
+      }
+    },
     data () {
       return {
         LngLatParam: {
@@ -196,7 +231,9 @@
         //   parkPrice: '',
         //   dist: ''
         // }
-        parkList: []
+        parkList: [],
+        localParkList: [],
+        parkProvince: ''
       }
     },
 
@@ -209,13 +246,31 @@
           this.LngLatParam.parkLng = pspt.lng
           this.LngLatParam.parkLat = pspt.lat
           this.getDayTourList()
+          this.parkProvince = position.address.province // 获取省份信息
+          this.getLocalParkList()
         })
       },
+      // 获取团日游乐推荐的景区（根据距离和人气推荐）
       getDayTourList () {
         this.$http.post('/api/tourism/home/dayTour', this.LngLatParam).then(response => {
           let res = response.data.data
           this.parkList = res
-          console.log(JSON.stringify(res))
+        }).catch(error => {
+          alert('请求失败!' + error)
+        })
+      },
+      // 拼接图片路径，获取图片
+      getImageUrl (parkImg) {
+        let imgSrc = '/static/img/park/'
+        let imageSrc = imgSrc + parkImg
+        return imageSrc
+      },
+      // 获取周边推荐的列表（范围:省内）
+      getLocalParkList () {
+        this.$http.get('/api/tourism/home/localTour/' + this.parkProvince).then(response => {
+          let res = response.data.data
+          this.localParkList = res
+          console.log(res)
         }).catch(error => {
           alert('请求失败!' + error)
         })
@@ -233,7 +288,7 @@
   }
   .info_wrapper {
     width: 100%;
-    height: 2115px;
+    height: 2350px;/*235*/
   }
   .info_content1 {
     width: 100%;
@@ -253,7 +308,7 @@
   }
   .body_content {
     width: 100%;
-    height: 1650px;
+    height: 1903px;
     background-color: #f7f7f7;
   }
   .list_content2 {
@@ -298,7 +353,7 @@
     background-color: #c3c1bd;
     margin: 0 auto;
   }
-  /*具体介绍内容列表情况*/
+  /*具体推荐内容列表情况*/
   .perimeter_content4 {
     width: 100%;
     height: 300px;
@@ -306,7 +361,7 @@
   .perimeter_layout {
     width:1100px;
     height: 280px;
-    margin: 30px auto;
+    margin: 20px auto;
     background-color: #fff;
   }
   .perimeter_title {
@@ -363,6 +418,7 @@
     margin-top: 5px;
     margin-right: 6px;
     background-color: #f8f8f8;
+    cursor: pointer;
   }
   .card:hover{
     margin-top: -1px;
@@ -378,6 +434,17 @@
     height: 40px;
     background-color: #ffeaf6;
     margin-top: 5px;
+  }
+  .card_detail_font {
+    display: -webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  .card_detail i{
+    font-size: 15px;
+    font-weight: bold;
+    color: #00be7c;
   }
   .card_price {
     width: 214px;

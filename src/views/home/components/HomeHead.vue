@@ -65,11 +65,9 @@
         geolocation.getCurrentPosition(function getinfo (position) {
           let city = position.address.city
           _this.LngLatParams.lng = position.point.lng
-          console.log('aaaaaaa' + _this.LngLatParams.lng)
           _this.LngLatParams.lat = position.point.lat
-          console.log('bbbbbbb' + _this.LngLatParams.lat)
           _this.LocationCity = city
-        }, function (e) {
+        }, function (error) {
           _this.LocationCity = '定位失败'
         }, {provider: 'baidu'})
       }
