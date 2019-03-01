@@ -10,8 +10,8 @@
         <div class="list_content2 center_parent">
           <div class="list_box center_child">
             <ul>
-              <li><a>首页</a></li>
-              <li><a>团日游乐</a></li>
+              <li style="border-bottom: 2px solid #fff"><a>首页</a></li>
+              <li><a>当地日游</a></li>
               <li><a>周边推荐</a></li>
               <li><a>跟团旅行</a></li>
               <li><a>定制旅游</a></li>
@@ -25,14 +25,14 @@
             <HomeCarousel></HomeCarousel>
           </div>
         </div>
-        <!-- 团日游乐推荐 -->
+        <!-- 当地日游推荐 -->
         <div class="perimeter_content4 center_parent">
           <div class="perimeter_layout center_child">
             <div class="perimeter_title">
               <div class="perimeter_icon">
                 <img src="../../assets/img/homePage/car.png">
               </div>
-              <div class="perimeter_font">团日游乐</div>
+              <div class="perimeter_font">当地日游</div>
               <div class="perimeter_more"><a>更多 >></a></div>
             </div>
             <div class="perimeter_menu">
@@ -250,7 +250,7 @@
           this.getLocalParkList()
         })
       },
-      // 获取团日游乐推荐的景区（根据距离和人气推荐）
+      // 获取当地日游推荐的景区（根据距离和人气推荐）
       getDayTourList () {
         this.$http.post('/api/tourism/home/dayTour', this.LngLatParam).then(response => {
           let res = response.data.data
@@ -297,19 +297,17 @@
   .info_layout1 {
     width:100%;
     height: 3px;
-    /*background-color: darkgrey;*/
     margin: 1px auto;
   }
   .info_layout2 {
     width:1030px;
     height: 100px;
     margin: auto;
-    /*background-color: darkgrey;*/
   }
   .body_content {
     width: 100%;
     height: 1903px;
-    background-color: #f7f7f7;
+    background-color: #f1f5f9;
   }
   .list_content2 {
     width: 100%;
@@ -337,11 +335,12 @@
     color: #ffffff;
     font-size: 16px;
     display: block;
+    height: 40px;
   }
   /*鼠标移动时，样式变化,顺序为link→visited→hover→active*/
   .list_box ul li a:hover{
     font-size: 19px;
-    border-bottom: 2px #fff;
+    border-bottom: 2px solid #fff;
   }
   .carousel_content3 {
     width: 100%;
