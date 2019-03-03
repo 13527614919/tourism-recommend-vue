@@ -45,6 +45,7 @@
               </div>
               <!-- 简介部分 -->
               <div class="content1_layout_right">
+              </div>
             </div>
           </div>
         </div>
@@ -66,7 +67,6 @@
         <AnchorLink href="#API" title="评价" scroll-offset="40" />
       </Anchor>
     </div>
-  </div>
   </div>
 </template>
 
