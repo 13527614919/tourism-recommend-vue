@@ -66,6 +66,8 @@
           let city = position.address.city
           _this.LngLatParams.lng = position.point.lng
           _this.LngLatParams.lat = position.point.lat
+          console.log('这是定位经度：' + _this.LngLatParams.lng)
+          console.log('这是定位纬度：' + _this.LngLatParams.lat)
           _this.LocationCity = city
         }, function (error) {
           _this.LocationCity = '定位失败'

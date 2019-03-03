@@ -10,13 +10,13 @@
         <div class="list_content2 center_parent">
           <div class="list_box center_child">
             <ul>
-              <li style="border-bottom: 2px solid #fff"><a>首页</a></li>
-              <li><a>当地日游</a></li>
-              <li><a>周边推荐</a></li>
-              <li><a>跟团旅行</a></li>
-              <li><a>定制旅游</a></li>
-              <li><a>景点介绍</a></li>
-              <li><a>路线查询</a></li>
+              <li style="border-bottom: 2px solid #fff"><a href="javascript:;"><router-link to="/">首页</router-link></a></li>
+              <li><a href="javascript:;"><router-link to="/tour/localMain">当地日游</router-link></a></li>
+              <li><a href="javascript:;"><router-link to="/tour/ambitusMain">周边推荐</router-link></a></li>
+              <li><a href="javascript:;"><router-link to="/tour/groupAction">跟团旅行</router-link></a></li>
+              <li><a href="javascript:;"><router-link to="/tour/customMain">定制旅游</router-link></a></li>
+              <li><a href="javascript:;"><router-link to="/tour/parkMain">景区介绍</router-link></a></li>
+              <li><a href="javascript:;"><router-link to="/tour/routeMain">路线查询</router-link></a></li>
             </ul>
           </div>
         </div>
@@ -134,7 +134,7 @@
             </div>
           </div>
         </div>
-        <!-- 景点介绍 -->
+        <!-- 景区介绍 -->
         <div class="perimeter_content4 center_parent">
           <div class="perimeter_layout center_child">
             <div class="perimeter_title">
@@ -243,8 +243,8 @@
         const geolocation = new BMap.Geolocation()
         geolocation.getCurrentPosition((position) => {
           let pspt = position.point
-          this.LngLatParam.parkLng = pspt.lng
-          this.LngLatParam.parkLat = pspt.lat
+          this.LngLatParam.parkLng = pspt.lng - 0.0200
+          this.LngLatParam.parkLat = pspt.lat - 0.0067
           this.getDayTourList()
           this.parkProvince = position.address.province // 获取省份信息
           this.getLocalParkList()

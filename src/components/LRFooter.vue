@@ -58,7 +58,7 @@
   export default {}
 </script>
 
-<style>
+<style scoped>
   .wrap {
     width: 100%;
     height: 216px;
