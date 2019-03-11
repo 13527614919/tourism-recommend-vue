@@ -7,18 +7,8 @@
         </div>
       </div>
       <div class="body_content">
-        <div class="list_content2 center_parent">
-          <div class="list_box center_child">
-            <ul>
-              <li style="border-bottom: 2px solid #fff"><a href="javascript:;"><router-link to="/">首页</router-link></a></li>
-              <li><a href="javascript:;"><router-link to="/tour/localMain">当地日游</router-link></a></li>
-              <li><a href="javascript:;"><router-link to="/tour/ambitusMain">周边推荐</router-link></a></li>
-              <li><a href="javascript:;"><router-link to="/tour/groupAction">跟团旅行</router-link></a></li>
-              <li><a href="javascript:;"><router-link to="/tour/customMain">定制旅游</router-link></a></li>
-              <li><a href="javascript:;"><router-link to="/tour/parkMain">景区介绍</router-link></a></li>
-              <li><a href="javascript:;"><router-link to="/tour/routeMain">路线查询</router-link></a></li>
-            </ul>
-          </div>
+        <div>
+          <MenuList />
         </div>
         <div class="carousel_content3">
           <div class="carousel_layout">
@@ -204,11 +194,13 @@
   import HomeHead from './components/HomeHead.vue'
   import HomeCarousel from './components/HomeCarousel.vue'
   import BMap from 'BMap'
+  import MenuList from '@/components/header/MenuList.vue'
   export default {
     name: 'HomeInfo',
     components: {
       HomeCarousel,
-      HomeHead
+      HomeHead,
+      MenuList
     },
     filter: {
       ellipsis (value) {
@@ -233,7 +225,8 @@
         // }
         parkList: [],
         localParkList: [],
-        parkProvince: ''
+        parkProvince: '',
+        userInfo: this.$jwtCookies.userInfo
       }
     },
 
@@ -308,16 +301,6 @@
     width: 100%;
     height: 1903px;
     background-color: #f1f5f9;
-  }
-  .list_content2 {
-    width: 100%;
-    height: 40px;
-    background-color: #00be7c;
-  }
-  .list_box {
-    width: 1050px;
-    height: 40px;
-    margin: 0 auto;
   }
   .list_box ul {
     display:inline;

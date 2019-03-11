@@ -16,6 +16,7 @@ import CustomMain from '@/views/custom/CustomMain.vue' // 定制旅游主页
 import HeaderTop from '@/components/header/HeaderTop.vue'
 import ParkMain from '@/views/park/ParkMain.vue' // 景区介绍主页
 import RouteMain from '@/views/route/RouteMain.vue' // 路线查询主页
+import MenuList from '@/components/header/MenuList.vue' // 测试1
 
 Vue.use(Router)
 
@@ -32,6 +33,7 @@ export default new Router({
     { path: '/tour/customMain', component: CustomMain, meta: { title: '定制旅游主页面' } },
     { path: '/tour/headerTop', component: HeaderTop, meta: { title: 'tou' } },
     { path: '/tour/parkMain', component: ParkMain, meta: { title: '景区介绍详情页面' } },
-    { path: '/tour/routeMain', component: RouteMain, meta: { title: '路线查询' } }
+    { path: '/tour/routeMain', component: RouteMain, meta: { title: '路线查询' } },
+    { path: '/tour/menuList', component: MenuList, meta: { title: '测试' } }
   ]
 })

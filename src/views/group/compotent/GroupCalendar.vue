@@ -1,6 +1,6 @@
 <template>
     <div>
-      <li v-for="(item,index) in list" :key="">
+      <li v-for="(item,index) in list" :key="index">
         <img :src="item.active?url:urls" alt=""  @click.stop="up(index)"/>
         {{item.id}}
       </li>

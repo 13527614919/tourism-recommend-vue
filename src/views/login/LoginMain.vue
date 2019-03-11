@@ -27,17 +27,21 @@
             <div class="lf_main" v-show="isShow">
               <div class="lf_content2">
                 <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="95">
-                  <FormItem label="登录账号：" prop="loginPhone">
-                    <Input type="text" v-model="formValidate.loginPhone" placeholder="请输入手机号码，11位" class="item_width" />
+                  <FormItem label="登录账号：" prop="userPhone">
+                    <Input type="text" v-model="formValidate.userPhone" placeholder="请输入手机号码，11位" class="item_width" />
                   </FormItem>
-                  <FormItem label="登录密码：" prop="loginPassword">
-                    <Input type="password" v-model="formValidate.loginPassword" placeholder="请输入密码，8至16位" class="item_width" />
+                  <FormItem label="登录密码：" prop="userPwd">
+                    <Input type="password" v-model="formValidate.userPwd" placeholder="请输入密码，8至16位" class="item_width" />
                   </FormItem>
+                  <FormItem label="验证码：" prop="captcha">
+                    <Input v-model="formValidate.captcha" placeholder="请输入验证码" class="item_width130" />
+                    <ValidCode :value.sync="validCode" style="margin-right: 27px"></ValidCode>
+                  </FormItem>
+                  <div class="remenberPwd_layout">
+                    <Checkbox v-model="isAutoLogin">下次自动登录</Checkbox>
+                  </div>
                   <FormItem>
-                    <Checkbox v-model="isSavePsw">记住密码</Checkbox>
-                  </FormItem>
-                  <FormItem>
-                    <Button type="primary" @click="handleSubmit('formValidate')" class="item_button_width">登录</Button>
+                    <Button type="primary" @click="handleLogin('formValidate')" class="item_button_width">登录</Button>
                     <Button @click="handleReset('formValidate')" style="margin-left: 10px" class="item_button_width">重置</Button>
                   </FormItem>
                 </Form>
@@ -88,11 +92,13 @@
 <script>
   import LRHeader from '../../components/LRHeader.vue'
   import LRFooter from '../../components/LRFooter.vue'
+  import ValidCode from '../../components/validCode.vue'
   export default {
     name: 'LoginMain',
     components: {
       LRHeader,
-      LRFooter
+      LRFooter,
+      ValidCode
     },
     data () {
       // 自定义校验：有效手机号码
@@ -101,7 +107,7 @@
             callback(new Error('手机号码不能为空'))
           } else {
             if (value !== '') {
-              var reg = /^1[3456789]\d{9}$/
+              const reg = /^1[3456789]\d{9}$/
               if (!reg.test(value)) {
                 callback(new Error('请输入有效的手机号码'))
               }
@@ -109,26 +115,38 @@
             callback()
           }
         }
+      const codeValidator = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入验证码'))
+        } else if (!/^[a-zA-Z0-9]{4}$/.test(value) || value.toLowerCase() !== this.validCode.toLowerCase()) {
+          callback(new Error('请输入正确的验证码'))
+        } else {
+          callback()
+        }
+      }
       return {
         isShow: true,
-        isSavePsw: false,
+        isAutoLogin: true,
+        validCode: '', // 图形验证码
         formValidate: {
-          loginPhone: '',
-          loginPassword: ''
-        },
+          userPhone: '',
+          userPwd: '',
+          captcha: ''
+    },
         formValidate2: {
-          loginPhone: '',
+          userPhone: '',
           code: ''
         },
         ruleValidate: {
-          loginPhone: [{required: true, validator: validateMobilePhone, trigger: 'blur'}],
-          loginPassword: [
+          userPhone: [{required: true, validator: validateMobilePhone, trigger: 'blur'}],
+          userPwd: [
             {required: true, message: '登录密码不能为空', trigger: 'blur'},
             {min: 8, max: 16, message: '密码长度不正确'}
-          ]
+          ],
+          captcha: [{required: true, validator: codeValidator, trigger: 'blur'}]
         },
         ruleValidate2: {
-          loginPhone: [ {required: true, validator: validateMobilePhone, trigger: 'blur'} ],
+          userPhone: [ {required: true, validator: validateMobilePhone, trigger: 'blur'} ],
           code: [
             {required: true, message: '短信验证码不能为空', trigger: 'blur'},
             {min: 6, max: 6, message: '验证码长度不正确'}
@@ -145,17 +163,22 @@
         let _this = this
         _this.isShow = false
       },
-      handleSubmit (name) {
-        console.log(this.formValidate.loginPhone)
+      handleLogin (name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
             this.$http.post('/api/user/login', this.formValidate).then(response => {
               let res = response.data
               console.log(res)
+              let user = res.data
+              console.log('开始')
+              this.$jwtCookies.setUser(user, this.isAutoLogin)
+              console.log('结束')
+              // 登陆成功，跳转首页
+              this.$Message.success(res.message)
+              setTimeout(() => { location.href = '/' }, 1000)
             }).catch(function (response) {
               console.log(response)
             })
-            this.$Message.success('Success!')
           } else {
             this.$Message.error('Fail!')
           }
@@ -231,11 +254,18 @@
   .lf_content2 {
     float: left;
     width: 370px;
-    height: 203px;
+    height: 232px;
     margin: 20px auto;
   }
   .item_width {
     width: 250px;
+  }
+  .item_width130 {
+    width: 130px;
+  }
+  .remenberPwd_layout {
+    padding-bottom: 10px;
+    padding-left: 95px;
   }
   .item_button_width {
     width: 117px;

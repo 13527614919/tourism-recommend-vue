@@ -13,6 +13,9 @@ import '../my-theme/index.less'
 // Vue.prototype.$http = httpTools
 import axios from 'axios'
 import qs from 'qs'
+// token令牌
+import jwtCookies from '@/tools/jwtCookies.js'
+Vue.prototype.$jwtCookies = jwtCookies
 Vue.prototype.$http = axios
 Vue.prototype.$qs = qs
 /* 新添加 */

@@ -9,18 +9,8 @@
         </div>
       </div>
       <!-- 导航栏菜单列表 -->
-      <div class="nav center_parent">
-        <div class="nav_menu center_child">
-          <ul>
-            <li><a>首页</a></li>
-            <li><a>当地日游</a></li>
-            <li><a>周边推荐</a></li>
-            <li style="border-bottom: 2px solid #fff"><a>跟团旅行</a></li>
-            <li><a>定制旅游</a></li>
-            <li><a>景区介绍</a></li>
-            <li><a>路线查询</a></li>
-          </ul>
-        </div>
+      <div class="nav">
+        <MenuList />
       </div>
       <!-- 主体部分 -->
       <div class="main0">
@@ -259,7 +249,7 @@
       <FloatFrame />
       <!--左侧小镖苗浮框 -->
       <div class="anchor_box">
-        <Anchor show-ink offset-bottom="250">
+        <Anchor show-ink :offset-bottom="250">
           <AnchorLink href="#basic_usage" title="产品" scroll-offset="40" />
           <AnchorLink href="#static_position" title="行程" scroll-offset="40" />
           <AnchorLink href="#API" title="费用" scroll-offset="40" />
@@ -275,12 +265,14 @@
   import HeaderTop from '@/components/header/HeaderTop.vue'
   import FloatFrame from '@/components/FloatFrame.vue'
   import LRFooter from '@/components/LRFooter.vue'
+  import MenuList from '@/components/header/MenuList.vue'
   export default {
     name: 'GroupDetail',
     components: {
       HeaderTop,
       FloatFrame,
-      LRFooter
+      LRFooter,
+      MenuList
     },
     data () {
       return {
@@ -376,14 +368,8 @@
   }
   /*导航栏菜单*/
   .nav {
-    width: 100%;
     height: 40px;
     background-color: #00be7c;
-  }
-  .nav_menu {
-    width: 1050px;
-    height: 40px;
-    margin: 0 auto;
   }
   .nav_menu ul li{
     width: 100px;
